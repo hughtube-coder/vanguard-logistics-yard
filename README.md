@@ -6,7 +6,7 @@ An industrial-grade Warehouse Inventory & Order Management System UI/UX interact
 
 ## Live Prototype Access
 
-* **Interactive Prototype URL:** [https://hughtube-coder.github.io/vanguard-logistics-yard/](https://hughtube-coder.github.io/vanguard-logistics-yard/)
+* **Interactive Prototype URL:** [https://hughtube-coder.github.io/vanguard-logistics-yard/]([https://hughtube-coder.github.io/vanguard-logistics-yard/](https://hughtube-coder.github.io/vanguard-logistics-yard/vanguard-terminal.html))
 * **Repository:** [https://github.com/hughtube-coder/vanguard-logistics-yard](https://github.com/hughtube-coder/vanguard-logistics-yard)
 * **Default Security Passcode (All Accounts):** `yard2026`
 
