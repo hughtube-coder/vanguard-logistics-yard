@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vanguard Logistics Yard | Industrial Terminal Console</title>
+  <link rel="stylesheet" href="styles/vanguard-industrial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="vly-theme">
+
+  <!-- UNIQUE PURE-VISUAL LOADING OVERLAY (NO TEXT) -->
+  <div id="vly-global-loader" class="loader-overlay hidden" aria-hidden="true">
+    <div class="loader-chassis">
+      <div class="hud-bracket top-left"></div>
+      <div class="hud-bracket top-right"></div>
+      <div class="hud-bracket bottom-left"></div>
+      <div class="hud-bracket bottom-right"></div>
+      
+      <!-- 3D Isometric Cargo Crate with Laser Scanner -->
+      <div class="cargo-scanner-assembly">
+        <div class="laser-beam"></div>
+        <div class="iso-crate">
+          <div class="crate-face crate-top"></div>
+          <div class="crate-face crate-left"></div>
+          <div class="crate-face crate-right"></div>
+        </div>
+        <div class="dock-radar-ring"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Feedback Shelf with Reversal Support (Rule 3 & 6)[cite: 1] -->
+  <aside id="vly-toast-shelf" class="toast-shelf" aria-live="polite" aria-label="System Notifications"></aside>
+
+  <!-- MODULE 1: LOGIN & OPERATOR AUTHENTICATION[cite: 1] -->
+  <section id="view-vly-auth" class="auth-viewport">
+    <div class="auth-chassis">
+      <div class="auth-top-controls">
+        <button type="button" class="theme-toggle-btn" id="btn-theme-auth" title="Switch Theme (Light/Dark)">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+
+      <div class="auth-brand">
+        <div class="vly-badge-logo">VLY</div>
+        <div class="auth-text-wrap">
+          <h1>Vanguard Logistics Yard</h1>
+          <p class="auth-sub">Freight, Inventory & Dispatch Console</p>
+        </div>
+      </div>
+
+      <div class="auth-callout">
+        <span class="callout-icon">⚡</span>
+        <div class="callout-body">
+          <strong>Station ID: YARD-GATEWAY-04</strong>
+          <span>Authorized personnel only. All access transactions are logged to yard security audit ledgers.</span>
+        </div>
+      </div>
+
+      <form id="vly-auth-form" novalidate>
+        <div class="form-group">
+          <label for="vly-input-operator">Operator Badge ID / User Handle <span class="req">*</span></label>
+          <input type="text" id="vly-input-operator" class="field-input" placeholder="e.g. admin1 or VLY-DIR-101" autocomplete="username" required>
+          <span class="field-validation" id="err-vly-operator"></span>
+        </div>
+        <div class="form-group">
+          <label for="vly-input-key">Access Passcode <span class="req">*</span></label>
+          <input type="password" id="vly-input-key" class="field-input" placeholder="••••••••" autocomplete="current-password" required>
+          <span class="field-validation" id="err-vly-passcode"></span>
+        </div>
+        
+        <!-- Station Session Row -->
+        <div class="auth-meta-bar">
+          <label class="checkbox-label" for="chk-persist-session">
+            <input type="checkbox" id="chk-persist-session" checked>
+            <span>Remember Station Lock</span>
+          </label>
+          <span class="station-status-text">Terminal Ready</span>
+        </div>
+
+        <!-- Full-Width Responsive Roster Banner -->
+        <div class="credential-pill-banner">
+          <span class="cred-label">Team Roster:</span>
+          <code>admin1</code> – <code>admin7</code>
+          <span class="cred-divider">|</span>
+          <span class="cred-label">Key:</span>
+          <code>yard2026</code>
+        </div>
+
+        <button type="submit" class="btn btn-vly-primary btn-block" id="btn-submit-auth">Authorize Terminal Access</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- POST-AUTHENTICATION WORKSTATION APPARATUS -->
+  <div id="vly-workstation" class="workstation-layout hidden">
+    <!-- Left Command Sidebar -->
+    <aside class="yard-sidebar" id="vly-sidebar">
+      <div class="yard-brand-header">
+        <div class="vly-badge-logo small">VLY</div>
+        <div class="yard-brand-title">
+          <span class="yard-name">VANGUARD</span>
+          <span class="yard-sub">Logistics Yard</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section-label">CORE MODULES</div>
+      <nav class="yard-nav" aria-label="Terminal Navigation">
+        <button type="button" class="nav-anchor active" data-view="mod-yard-dashboard" title="Shortcut: Alt + 1">
+          <span class="nav-glyph">📊</span>
+          <span class="nav-text">Yard Dashboard</span>
+          <kbd class="nav-kbd">1</kbd>
+        </button>
+        <button type="button" class="nav-anchor" data-view="mod-yard-inventory" title="Shortcut: Alt + 2">
+          <span class="nav-glyph">📦</span>
+          <span class="nav-text">Inventory Catalog</span>
+          <kbd class="nav-kbd">2</kbd>
+        </button>
+        <button type="button" class="nav-anchor" data-view="mod-yard-receiving" title="Shortcut: Alt + 3">
+          <span class="nav-glyph">📥</span>
+          <span class="nav-text">Freight Receiving</span>
+          <kbd class="nav-kbd">3</kbd>
+        </button>
+        <button type="button" class="nav-anchor" data-view="mod-yard-picking" title="Shortcut: Alt + 4">
+          <span class="nav-glyph">📋</span>
+          <span class="nav-text">Order Fulfillment</span>
+          <kbd class="nav-kbd">4</kbd>
+        </button>
+        <button type="button" class="nav-anchor" data-view="mod-yard-tracking" title="Shortcut: Alt + 5">
+          <span class="nav-glyph">🔄</span>
+          <span class="nav-text">Movement Ledger</span>
+          <kbd class="nav-kbd">5</kbd>
+        </button>
+        <button type="button" class="nav-anchor" data-view="mod-yard-reports" title="Shortcut: Alt + 6">
+          <span class="nav-glyph">📑</span>
+          <span class="nav-text">Reports & Alerts</span>
+          <kbd class="nav-kbd">6</kbd>
+        </button>
+      </nav>
+
+      <div class="sidebar-section-label">OPERATOR TERMINAL</div>
+      <div class="yard-operator-tray">
+        <div class="operator-profile">
+          <div class="operator-initials" id="vly-badge-avatar">AC</div>
+          <div class="operator-meta">
+            <span class="operator-name" id="vly-operator-name">Operator Active</span>
+            <span class="operator-station" id="vly-operator-tier">Terminal Lead</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-vly-outline btn-block" id="btn-terminate-session">Exit Terminal</button>
+      </div>
+    </aside>
+
+    <!-- Operational Viewport Stage -->
+    <main class="yard-stage">
+      <!-- Universal Topbar -->
+      <header class="yard-topbar">
+        <div class="terminal-search-wrap">
+          <span class="search-glyph">🔎</span>
+          <input type="text" id="vly-global-search" placeholder="Scan SKU, BOL manifest, bay coordinate (Alt + S)..." autocomplete="off">
+          <div id="vly-search-autocomplete" class="search-autocomplete-box hidden"></div>
+        </div>
+        <div class="topbar-status-rack">
+          <button type="button" class="theme-toggle-btn" id="btn-theme-topbar" title="Toggle Dark/Light Mode">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <div class="quick-keyboard-cue">Press <kbd>Alt</kbd> + <kbd>1-6</kbd></div>
+          
+          <!-- Interactive Alert Beacon & Dropdown Popover -->
+          <div class="beacon-dropdown-wrap">
+            <button type="button" class="btn-glyph-beacon" id="vly-beacon-notif" title="View Active Yard Broadcasts">
+              🚨<span class="beacon-count" id="vly-active-alert-pill">2</span>
+            </button>
+            <div class="beacon-dropdown-menu hidden" id="vly-beacon-menu">
+              <div class="beacon-menu-header">
+                <span class="beacon-menu-title">Live Yard Broadcasts</span>
+                <button type="button" class="btn-link" id="btn-beacon-dismiss-all">Acknowledge All</button>
+              </div>
+              <ul class="beacon-menu-list" id="beacon-menu-list"></ul>
+              <div class="beacon-menu-footer">
+                <button type="button" class="btn btn-vly-primary btn-block btn-table" id="btn-beacon-view-module7">
+                  Open Reports & Alerts Console →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="yard-location-tag">
+            <span class="pulse-indicator"></span> Terminal Bay-4 (East Sector)
+          </div>
+        </div>
+      </header>
+
+      <!-- MODULE 2: YARD OPERATIONS DASHBOARD[cite: 1] -->
+      <section id="mod-yard-dashboard" class="yard-module active">
+        <div class="module-title-strip">
+          <div>
+            <h2>Terminal Operational Overview</h2>
+            <p class="description">Live dock throughput, rack storage allocations, and priority replenishment cues.</p>
+          </div>
+          <div class="strip-controls">
+            <button type="button" class="btn btn-vly-outline" id="btn-nav-to-receiving">+ Log Inbound Freight</button>
+            <button type="button" class="btn btn-vly-primary" id="btn-nav-to-picking">Process Outbound Orders</button>
+          </div>
+        </div>
+
+        <div class="kpi-yard-strip">
+          <div class="kpi-pod">
+            <span class="pod-label">Cataloged SKUs</span>
+            <span class="pod-stat" id="kpi-sku-count">0</span>
+            <span class="pod-footnote">Active master items</span>
+          </div>
+          <div class="kpi-pod">
+            <span class="pod-label">Total Storage Units</span>
+            <span class="pod-stat" id="kpi-total-units">0</span>
+            <span class="pod-footnote">Across 18 high-bay zones</span>
+          </div>
+          <div class="kpi-pod pod-warning clickable" id="kpi-card-low-stock" title="User Flow 3: Click to filter low-stock inventory">
+            <span class="pod-label">Critical Replenishment</span>
+            <span class="pod-stat warning-val" id="kpi-low-units">0</span>
+            <span class="pod-footnote trigger-txt">Mitigate deficits (Click to resolve) →</span>
+          </div>
+          <div class="kpi-pod">
+            <span class="pod-label">Dock Inbound Scheduled</span>
+            <span class="pod-stat" id="kpi-incoming-loads">2</span>
+            <span class="pod-footnote">Awaiting gate check-in</span>
+          </div>
+          <div class="kpi-pod">
+            <span class="pod-label">Awaiting Pick Run</span>
+            <span class="pod-stat" id="kpi-open-orders">0</span>
+            <span class="pod-footnote">Pending fulfillment release</span>
+          </div>
+        </div>
+
+        <div class="yard-dashboard-grid">
+          <div class="panel-box">
+            <div class="panel-title-bar">
+              <h3>Yard Activity & Broadcast Warnings</h3>
+              <button type="button" class="btn-link" id="btn-view-all-broadcasts">Broadcast Console</button>
+            </div>
+            <div class="panel-inner">
+              <ul class="ledger-quick-feed" id="dashboard-bulletin-list"></ul>
+            </div>
+          </div>
+          <div class="panel-box">
+            <div class="panel-title-bar">
+              <h3>Live Stock Movement Stream</h3>
+              <button type="button" class="btn-link" id="btn-view-all-stream">Full Ledger Audit</button>
+            </div>
+            <div class="panel-inner">
+              <table class="grid-table compact">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>SKU</th>
+                    <th>Delta</th>
+                    <th>Ref / BOL</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-quick-movements"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 3: INVENTORY CATALOG MANAGEMENT[cite: 1] -->
+      <section id="mod-yard-inventory" class="yard-module hidden">
+        <div class="module-title-strip">
+          <div>
+            <h2>Inventory Catalog & Bay Mapping</h2>
+            <p class="description">Master product lines, designated storage bay coordinates, and real-time replenishment balances.</p>
+          </div>
+          <div class="strip-controls">
+            <button type="button" class="btn btn-vly-outline" id="btn-trigger-transfer-modal">Transfer / Adjust Stock</button>
+            <button type="button" class="btn btn-vly-primary" id="btn-trigger-add-item">+ Catalog New Inventory</button>
+          </div>
+        </div>
+
+        <!-- Full-Width Responsive Search & Dropdown Toolbar -->
+        <div class="grid-filter-rack">
+          <div class="filter-search-unit">
+            <span class="filter-search-icon">🔍</span>
+            <input type="text" id="inv-query-field" class="field-input with-icon" placeholder="Search SKU, Product Name, or Storage Bay (e.g. BAY-A-01)...">
+          </div>
+          <div class="filter-dropdown-unit">
+            <select id="inv-filter-group" class="dropdown-ctrl">
+              <option value="ALL">All Product Classes</option>
+              <option value="Heavy Equipment">Heavy Equipment</option>
+              <option value="Structural Hardware">Structural Hardware</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Freight Supplies">Freight Supplies</option>
+            </select>
+            <select id="inv-filter-health" class="dropdown-ctrl">
+              <option value="ALL">All Stock Levels</option>
+              <option value="In Stock">In Stock</option>
+              <option value="Low Stock">Low Stock (≤ 5 units)</option>
+              <option value="Out of Stock">Out of Stock (0 units)</option>
+            </select>
+            <button type="button" class="btn btn-vly-outline" id="btn-inv-reset-filters">Reset View</button>
+          </div>
+        </div>
+
+        <div class="table-chassis">
+          <table class="grid-table">
+            <thead>
+              <tr>
+                <th>SKU Identifier</th>
+                <th>Product Description</th>
+                <th>Class</th>
+                <th>Storage Bay</th>
+                <th>Available Qty</th>
+                <th>Stock Status</th>
+                <th>Origin Supplier</th>
+                <th class="align-right">Operator Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vly-inventory-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- MODULE 4: INBOUND FREIGHT RECEIVING (USER FLOW 1)[cite: 1] -->
+      <section id="mod-yard-receiving" class="yard-module hidden">
+        <div class="module-title-strip">
+          <div>
+            <h2>Inbound Freight Intake & Manifest Verification</h2>
+            <p class="description">Verify carrier bills of lading, evaluate physical freight condition, and commit items to storage bays.</p>
+          </div>
+        </div>
+
+        <!-- High-Precision Stepper Wizard -->
+        <div class="flow-checkpoint-bar">
+          <div class="checkpoint active" id="rcv-chk-1">
+            <div class="checkpoint-idx-wrap">
+              <span class="checkpoint-idx">1</span>
+            </div>
+            <span class="checkpoint-name">Manifest Intake</span>
+          </div>
+          <div class="checkpoint-connector" id="conn-1-2"></div>
+          <div class="checkpoint" id="rcv-chk-2">
+            <div class="checkpoint-idx-wrap">
+              <span class="checkpoint-idx">2</span>
+            </div>
+            <span class="checkpoint-name">Physical Verification</span>
+          </div>
+          <div class="checkpoint-connector" id="conn-2-3"></div>
+          <div class="checkpoint" id="rcv-chk-3">
+            <div class="checkpoint-idx-wrap">
+              <span class="checkpoint-idx">3</span>
+            </div>
+            <span class="checkpoint-name">Bay Stock Committed</span>
+          </div>
+        </div>
+
+        <!-- Stage 1: Manifest Intake Form -->
+        <div class="card-chassis wizard-pane" id="receiving-pane-stage1">
+          <div class="pane-headline">
+            <h3>Step 1: Carrier Manifest Documentation</h3>
+            <span class="pane-cue">All flagged fields are required prior to review.</span>
+          </div>
+          <form id="vly-intake-form" class="two-col-form">
+            <div class="form-group">
+              <label for="intake-bol-number">Bill of Lading / Carrier Manifest # <span class="req">*</span></label>
+              <input type="text" id="intake-bol-number" class="field-input" placeholder="e.g. BOL-VLY-4902" required>
+            </div>
+            <div class="form-group">
+              <label for="intake-vendor-select">Freight Carrier / Supplier <span class="req">*</span></label>
+              <select id="intake-vendor-select" class="dropdown-ctrl" required>
+                <option value="">Select verified freight carrier...</option>
+                <option value="Apex Industrial Parts">Apex Industrial Parts</option>
+                <option value="Titan Cargo Lines">Titan Cargo Lines</option>
+                <option value="Global Tech Supply Co.">Global Tech Supply Co.</option>
+                <option value="PacEuro Packaging">PacEuro Packaging</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="intake-sku-select">Catalog SKU to Restock <span class="req">*</span></label>
+              <select id="intake-sku-select" class="dropdown-ctrl" required>
+                <option value="">Choose catalog product...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="intake-quantity">Received Unit / Crate Tally <span class="req">*</span></label>
+              <input type="number" id="intake-quantity" class="field-input" min="1" max="10000" placeholder="e.g. 50" required>
+            </div>
+            <div class="form-group">
+              <label for="intake-condition">Cargo Physical Assessment <span class="req">*</span></label>
+              <select id="intake-condition" class="dropdown-ctrl" required>
+                <option value="Pristine">Pristine / Intact Seals</option>
+                <option value="Minor Packaging Wear">Acceptable - Minor Box Denting</option>
+                <option value="Needs Quarantine">Quarantine / Tampered Strapping</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="intake-timestamp">Intake Date <span class="req">*</span></label>
+              <input type="date" id="intake-timestamp" class="field-input date-input" required>
+            </div>
+            <div class="form-actions-full">
+              <button type="reset" class="btn btn-vly-outline" id="btn-wipe-intake">Clear Entries</button>
+              <button type="submit" class="btn btn-vly-primary">Proceed to Manifest Review →</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Stage 2: Manifest Review & Physical Verification -->
+        <div class="card-chassis wizard-pane hidden" id="receiving-pane-stage2">
+          <div class="pane-headline">
+            <h3>Step 2: Manifest Verification & Ledger Preview</h3>
+            <span class="pane-cue">Verify physical goods tally against dock bill before committing updates.</span>
+          </div>
+          <div class="verification-docket">
+            <table class="grid-table summary-spec">
+              <tbody>
+                <tr><th>Manifest Identifier:</th><td id="vfy-bol" class="mono text-bold">-</td></tr>
+                <tr><th>Freight Origin / Carrier:</th><td id="vfy-vendor">-</td></tr>
+                <tr><th>Target Product & SKU:</th><td id="vfy-product">-</td></tr>
+                <tr><th>Storage Location Bay:</th><td id="vfy-bay" class="mono">-</td></tr>
+                <tr><th>Stock Increment:</th><td id="vfy-amount" class="highlight-val">-</td></tr>
+                <tr><th>Condition Assessment:</th><td id="vfy-health">-</td></tr>
+                <tr><th>Intake Date:</th><td id="vfy-time">-</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="docket-actions">
+            <button type="button" class="btn btn-vly-outline" id="btn-modify-manifest">← Back & Correct Fields</button>
+            <button type="button" class="btn btn-vly-success" id="btn-commit-freight">Confirm & Commit Freight to Warehouse Stock</button>
+          </div>
+        </div>
+
+        <!-- Stage 3: Closure & Confirmation Receipt -->
+        <div class="card-chassis wizard-pane hidden center-align" id="receiving-pane-stage3">
+          <div class="stamp-icon">✓</div>
+          <h3>Inbound Freight Committed</h3>
+          <p class="description" id="vfy-receipt-summary">Inventory quantities have been reconciled and stamped to the yard audit ledger.</p>
+          <div class="receipt-card-block" id="vfy-receipt-box"></div>
+          <div class="closure-actions">
+            <button type="button" class="btn btn-vly-primary" id="btn-reset-intake-cycle">Process Next Freight Bill</button>
+            <button type="button" class="btn btn-vly-outline" id="btn-jump-to-inventory">View Inventory Catalog</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 5: ORDER PICKING & FULFILLMENT (USER FLOW 2)[cite: 1] -->
+      <section id="mod-yard-picking" class="yard-module hidden">
+        <div class="module-title-strip">
+          <div>
+            <h2>Outbound Fulfillment & Picking Pipeline</h2>
+            <p class="description">Select batches, verify bay picks, and advance orders: Pending → Picking → Ready → Completed.</p>
+          </div>
+          <div class="strip-controls">
+            <select id="vly-filter-order-phase" class="dropdown-ctrl">
+              <option value="ALL">All Order Phases</option>
+              <option value="Pending">Pending Assignment</option>
+              <option value="Picking">Active Picking Run</option>
+              <option value="Ready">Ready for Staging</option>
+              <option value="Completed">Completed & Dispatched</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="manifest-cards-grid" id="vly-orders-deck"></div>
+
+        <!-- Interactive Picking Workflow Dialog -->
+        <div class="modal-chassis hidden" id="modal-picking-flow" role="dialog" aria-modal="true" aria-labelledby="flow-order-code">
+          <div class="modal-box modal-wide">
+            <div class="modal-head">
+              <div>
+                <h3 id="flow-order-code">Fulfillment Run: ORD-9021</h3>
+                <span class="tag-status" id="flow-order-tag">Picking</span>
+              </div>
+              <button type="button" class="close-x" id="btn-exit-picking-modal" title="Close dialog (Esc)">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="order-manifest-header">
+                <div><strong>Client Destination:</strong> <span id="flow-client-target">-</span></div>
+                <div><strong>Dispatch Gate:</strong> <span id="flow-dispatch-gate">-</span></div>
+                <div><strong>Scheduled Date:</strong> <span id="flow-manifest-date">-</span></div>
+              </div>
+              <div class="picking-progress-wrap">
+                <div class="progress-meta">
+                  <span id="picking-progress-label">Picking Completion: 0%</span>
+                  <span id="picking-progress-count">0 of 0 lines picked</span>
+                </div>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill" id="picking-progress-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <h4>Floor Picking Slip</h4>
+              <p class="sub-cue">Navigate the aisle coordinates and check each item once verified into your cart.</p>
+              <div class="table-chassis">
+                <table class="grid-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Pick</th>
+                      <th>Storage Bay</th>
+                      <th>SKU</th>
+                      <th>Product Description</th>
+                      <th>Order Qty</th>
+                      <th>Bay On-Hand</th>
+                      <th>Availability</th>
+                    </tr>
+                  </thead>
+                  <tbody id="flow-pick-line-items"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-foot">
+              <button type="button" class="btn btn-vly-outline" id="btn-cancel-pick-session">Close Slip</button>
+              <button type="button" class="btn btn-vly-primary" id="btn-stage-pick-order" disabled>Stage Order as Ready</button>
+              <button type="button" class="btn btn-vly-success" id="btn-finalize-pick-order" disabled>Complete & Dispatch Freight</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 6: STOCK MOVEMENT & TRACKING LEDGER[cite: 1] -->
+      <section id="mod-yard-tracking" class="yard-module hidden">
+        <div class="module-title-strip">
+          <div>
+            <h2>Yard Stock Movement Ledger</h2>
+            <p class="description">Historical audit ledger for Inbound (Received), Outbound (Released), Transfers, and Cycle Adjustments.</p>
+          </div>
+          <div class="strip-controls">
+            <button type="button" class="btn btn-vly-outline" id="btn-export-vly-ledger">Export Movement Log (CSV)</button>
+          </div>
+        </div>
+
+        <div class="grid-filter-rack">
+          <div class="filter-search-unit">
+            <input type="text" id="vly-ledger-search" class="field-input" placeholder="Search by SKU, Reference BOL/Order ID, or Operator...">
+          </div>
+          <div class="filter-dropdown-unit">
+            <select id="vly-filter-ledger-type" class="dropdown-ctrl">
+              <option value="ALL">All Movement Types</option>
+              <option value="Received">Received (Inbound Freight)</option>
+              <option value="Released">Released (Order Dispatch)</option>
+              <option value="Transferred">Transferred (Bay Relocation)</option>
+              <option value="Adjusted">Adjusted (Cycle Count/Scrap)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-chassis">
+          <table class="grid-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Movement Type</th>
+                <th>SKU</th>
+                <th>Delta Qty</th>
+                <th>Prior Stock</th>
+                <th>Updated Stock</th>
+                <th>Responsible Operator</th>
+                <th>Reference Docket</th>
+              </tr>
+            </thead>
+            <tbody id="vly-ledger-table-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- MODULE 7: REPORTS & SYSTEM NOTIFICATIONS[cite: 1] -->
+      <section id="mod-yard-reports" class="yard-module hidden">
+        <div class="module-title-strip">
+          <div>
+            <h2>Reports & System Broadcasts</h2>
+            <p class="description">Consolidated warehouse summaries, critical stock audits, and operational system notifications.</p>
+          </div>
+          <div class="strip-controls">
+            <button type="button" class="btn btn-vly-outline" id="btn-clear-all-alerts">Mark Broadcasts Read</button>
+            <button type="button" class="btn btn-vly-primary" id="btn-compute-yard-audit">Compute Master Yard Audit</button>
+          </div>
+        </div>
+
+        <div class="yard-tab-strip">
+          <button type="button" class="tab-pill active" data-pane="subpane-vly-alerts">Yard Broadcasts</button>
+          <button type="button" class="tab-pane-btn" data-report="rep-inventory">Master Inventory</button>
+          <button type="button" class="tab-pane-btn" data-report="rep-lowstock">Low Stock Replenishment</button>
+          <button type="button" class="tab-pane-btn" data-report="rep-movements">Stock Movement Audit</button>
+          <button type="button" class="tab-pane-btn" data-report="rep-orders">Outbound Orders</button>
+        </div>
+
+        <div id="subpane-vly-alerts" class="subpane active">
+          <div class="card-chassis">
+            <ul class="broadcast-bulletin-deck" id="vly-full-alerts-list"></ul>
+          </div>
+        </div>
+
+        <div id="subpane-vly-reports" class="subpane hidden">
+          <div class="card-chassis">
+            <div class="report-header-banner">
+              <div>
+                <h3 id="report-view-title">Master Inventory Report</h3>
+                <p class="description" id="report-view-sub">Generated live from terminal database.</p>
+              </div>
+              <button type="button" class="btn btn-vly-outline" id="btn-print-report">Print Report</button>
+            </div>
+            <div class="table-chassis" id="report-table-container"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODALS: CATALOG CURATOR, PRODUCT DETAILS, STOCK TRANSFER & DANGER PROMPT -->
+  <div class="modal-chassis hidden" id="modal-product-curator" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="curator-modal-title">Catalog Inventory Line</h3>
+        <button type="button" class="close-x" id="btn-dismiss-curator">&times;</button>
+      </div>
+      <form id="form-item-curator">
+        <div class="modal-body">
+          <input type="hidden" id="curator-sku-hidden">
+          <div class="form-group">
+            <label for="curator-name">Product Name & Specifications <span class="req">*</span></label>
+            <input type="text" id="curator-name" class="field-input" placeholder="e.g. Reinforced Structural Steel I-Beam" required>
+          </div>
+          <div class="form-group">
+            <label for="curator-group">Product Classification <span class="req">*</span></label>
+            <select id="curator-group" class="dropdown-ctrl" required>
+              <option value="Heavy Equipment">Heavy Equipment</option>
+              <option value="Structural Hardware">Structural Hardware</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Freight Supplies">Freight Supplies</option>
+            </select>
+          </div>
+          <div class="two-col-form">
+            <div class="form-group">
+              <label for="curator-stock">Stock Units <span class="req">*</span></label>
+              <input type="number" id="curator-stock" class="field-input" min="0" required>
+            </div>
+            <div class="form-group">
+              <label for="curator-bay">Storage Bay Assignment <span class="req">*</span></label>
+              <input type="text" id="curator-bay" class="field-input" placeholder="e.g. BAY-C-04" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="curator-vendor">Primary Vendor / Origin <span class="req">*</span></label>
+            <input type="text" id="curator-vendor" class="field-input" placeholder="Vendor company" required>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-vly-outline" id="btn-cancel-curator">Cancel</button>
+          <button type="submit" class="btn btn-vly-primary">Commit to Catalog</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-chassis hidden" id="modal-product-details" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div>
+          <h3 id="spec-item-name">Item Details</h3>
+          <span class="tag-status" id="spec-status-pill">Status</span>
+        </div>
+        <button type="button" class="close-x" id="btn-close-details">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="spec-grid">
+          <div><label>SKU Number:</label> <span id="spec-sku" class="spec-data mono">-</span></div>
+          <div><label>Product Class:</label> <span id="spec-group" class="spec-data">-</span></div>
+          <div><label>Storage Bay:</label> <span id="spec-bay" class="spec-data mono">-</span></div>
+          <div><label>Current Stock:</label> <span id="spec-balance" class="spec-data highlight-val">-</span></div>
+          <div><label>Primary Vendor:</label> <span id="spec-vendor" class="spec-data">-</span></div>
+        </div>
+        <div class="alert-box-warning" id="spec-deficit-alert" style="display:none; margin-top: 1.25rem;">
+          ⚠️ <strong>Replenishment Alert:</strong> This product is at or below minimum safety levels (≤ 5 units).
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-vly-outline" id="btn-dismiss-details">Close</button>
+        <button type="button" class="btn btn-vly-primary" id="btn-route-to-restock">Restock via Freight Inbound</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-chassis hidden" id="modal-stock-transfer" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Bay Relocation or Stock Adjustment</h3>
+        <button type="button" class="close-x" id="btn-close-transfer">&times;</button>
+      </div>
+      <form id="form-stock-transfer">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="adj-sku-select">Target SKU <span class="req">*</span></label>
+            <select id="adj-sku-select" class="dropdown-ctrl" required></select>
+          </div>
+          <div class="form-group">
+            <label for="adj-action-type">Operation Type <span class="req">*</span></label>
+            <select id="adj-action-type" class="dropdown-ctrl" required>
+              <option value="Transferred">Transferred (Relocate Bay)</option>
+              <option value="Adjusted">Adjusted (Cycle Count / Scrap)</option>
+            </select>
+          </div>
+          <div class="form-group" id="group-new-bay">
+            <label for="adj-new-bay">New Storage Bay Assignment</label>
+            <input type="text" id="adj-new-bay" class="field-input" placeholder="e.g. BAY-D-09">
+          </div>
+          <div class="form-group" id="group-qty-delta">
+            <label for="adj-quantity-delta">Quantity Delta (Negative for shrinkage, e.g. -2 or +5)</label>
+            <input type="number" id="adj-quantity-delta" class="field-input" value="0">
+          </div>
+          <div class="form-group">
+            <label for="adj-reason">Audit Reason / Docket Note <span class="req">*</span></label>
+            <input type="text" id="adj-reason" class="field-input" placeholder="e.g. Routine Bin Consolidation" required>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-vly-outline" id="btn-cancel-transfer">Cancel</button>
+          <button type="submit" class="btn btn-vly-primary">Execute Adjustment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-chassis hidden" id="modal-danger-prompt" role="dialog" aria-modal="true">
+    <div class="modal-box modal-narrow">
+      <div class="modal-head">
+        <h3 id="danger-title">Verify Action</h3>
+        <button type="button" class="close-x" id="btn-dismiss-danger">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="danger-message">Are you certain you wish to proceed? You can undo this immediately from the toast alert.</p>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-vly-outline" id="btn-cancel-danger">Abort</button>
+        <button type="button" class="btn btn-vly-danger" id="btn-affirm-danger">Affirm Deletion</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/vanguard-manifest-data.js"></script>
+  <script src="scripts/vanguard-terminal-engine.js"></script>
+</body>
+</html>

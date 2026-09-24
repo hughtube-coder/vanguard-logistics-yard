@@ -1,0 +1,50 @@
+================================================================================
+VANGUARD LOGISTICS YARD (VLY) - OPERATOR TERMINAL ACCESS DIRECTORY
+Terminal Security Node: YARD-GATEWAY-04
+Master Password (All Accounts): yard2026
+================================================================================
+
+1. Name:     Aira Mae Canlas
+   Badge ID: VLY-DIR-101
+   Role:     Yard Operations Director (Module 2: Dashboard Overview)
+   Username: admin1
+   Password: yard2026
+
+2. Name:     Darren Gonzales
+   Badge ID: VLY-INV-102
+   Role:     Senior Inventory Specialist (Module 3: Inventory Catalog)
+   Username: admin2
+   Password: yard2026
+
+3. Name:     Hugh Daniel Raymundo
+   Badge ID: VLY-RCV-103
+   Role:     Inbound Freight & Receiving Officer (Module 4: Inbound Receiving)
+   Username: admin3
+   Password: yard2026
+
+4. Name:     Jessica Mae Estojero
+   Badge ID: VLY-FUL-104
+   Role:     Outbound Fulfillment & Picking Lead (Module 5: Order Picking)
+   Username: admin4
+   Password: yard2026
+
+5. Name:     Ladyayessa Gatdula
+   Badge ID: VLY-AUD-105
+   Role:     Stock Movement & Audit Officer (Module 6: Movement Ledger)
+   Username: admin5
+   Password: yard2026
+
+6. Name:     Nina Maria Pangan
+   Badge ID: VLY-QAC-106
+   Role:     Compliance & Quality Assurance Lead (Module 7: Reports & Broadcasts)
+   Username: admin6
+   Password: yard2026
+
+7. Name:     Rod Anne Pantaleon
+   Badge ID: VLY-DSP-107
+   Role:     Terminal Station & Dispatch Supervisor (Module 1: User Station & Access)
+   Username: admin7
+   Password: yard2026
+
+* Note: The legacy root credential "admin" / "yard2026" remains enabled as a system fallback.
+================================================================================
